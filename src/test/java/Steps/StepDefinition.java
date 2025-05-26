@@ -10,10 +10,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
@@ -156,4 +158,66 @@ public class StepDefinition extends BaseClass{
         }
     }
 
-}
+    @When("I delete Clean the house")
+    public void i_delete_clean_the_house() {
+        try{
+            Actions action = new Actions(driver);
+            action.moveToElement(page.deleteItem()).perform();
+            wait.until(ExpectedConditions.elementToBeClickable(page.delete())).click();
+            Hooks.log("Delete button is clicked");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            Hooks.log("Delete button is not clicked");
+            System.out.println("Delete button is not clicked");
+            Assert.fail();
+        }
+    }
+
+    @Then("the item should be removed")
+    public void the_item_should_be_removed() {
+        try{
+            List<WebElement> items = page.items();
+            int size = items.size();
+            Assert.assertEquals(size, 3, "Item not deleted");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            Hooks.log("Item not deleted");
+            System.out.println("Item not deleted");
+            Assert.fail();
+        }
+    }
+
+    @When("I click Active button, only active items should displayed")
+    public void iClickActiveButtonOnlyActiveItemsShouldDisplayed() {
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(page.active())).click();
+            List<WebElement> items = page.items();
+            Assert.assertEquals(items.size(), 1, "Active items not shown");
+            Hooks.log("Active item is: "+ items.getFirst());
+        }
+        catch (Throwable e){
+            e.printStackTrace();
+            Hooks.log("Active items not shown");
+            System.out.println("Active items not shown");
+            Assert.fail();
+        }
+    }
+    @When("I click Completed button, only completed items should displayed")
+    public void iClickCompletedButtonOnlyCompletedItemsShouldDisplayed() {
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(page.completeditem())).click();
+            List<WebElement> items = page.items();
+            Assert.assertEquals(items.size(), 2, "Completed items not shown");
+            for (WebElement item: items){
+                Hooks.log("Completed item is: "+ item.getText());
+            }
+        }
+        catch (Throwable e){
+            e.printStackTrace();
+            Hooks.log("Completed items not shown");
+            System.out.println("Completed items not shown");
+            Assert.fail();
+        }
+    }
+
+    }

@@ -50,4 +50,32 @@ public class ToDoPage {
     public List<WebElement> completed(){
         return completed;
     }
+
+    @FindBy(xpath = "//label[text()='Clean the house']")
+    WebElement deleteItem;
+
+    public WebElement deleteItem(){
+        return deleteItem;
+    }
+
+    @FindBy(xpath = "//label[text()='Clean the house']/following-sibling::button")
+    WebElement delete;
+
+    public WebElement delete(){
+        return delete;
+    }
+
+    @FindBy(xpath = "//a[text()='Active']")
+    WebElement active;
+
+    public WebElement active(){
+        return active;
+    }
+
+    @FindBy(xpath = "//a[text()='Completed']")
+    WebElement completeditem;
+
+    public WebElement completeditem(){
+        return completeditem;
+    }
 }
